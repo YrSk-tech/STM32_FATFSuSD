@@ -152,6 +152,60 @@ int main(void)
 	  		  }
 	  	  }
 	  	  break;
+	  	  case 3:
+	  	  {
+	  		  if(option == 1)// write file
+	  		  {
+	  			  option = 0;
+	  			  state = 4;
+
+	  		  }
+	  		  else if (option == 2) // read file
+	  		  {
+	  			  option = 0;
+	  			  state = 5;
+	  		  }
+	  		  else if(option == 3) // create file
+	  		  {
+	  			  option = 0;
+	  			  state = 10;
+	  		  }
+	  	  }
+	  	  break;
+	  	  case 4:
+	  	  {
+	  		  if(f_open(&MyFile, TEST.txt, FA_CREATE_ALWAYS | FA_WRITE) == FR_OK ) // Create and open a new file with write access
+	  		  {
+	  			  state = 6;
+	  		  }
+	  		  else
+	  		  {
+	  			  Error_Handler();
+	  		  }
+	  	  }
+	  	  break;
+	  	  case 5:
+	  	  {
+	  		  if(f_open(&MyFile, TEST.txt, FA_READ) == FR_OK ) // open a new file with read access
+	  		  {
+	  			  state = 7;
+	  		  }
+	  		  else
+	  		  {
+	  			  Error_Handler();
+	  		  }
+
+	  	  }
+	  	  break;
+	  	  case 6:
+	  	  {
+	  		  res = f_write(&MyFile, wrbuffer, sizeof(wrbuffer), (void *)&totalwr); // write a file with buffer information
+	  		  if(totalwr == 0 || (res != FR_OK)) // if nothing was writen in our file
+	  		  {
+	  			  Error_Handler();
+	  		  }
+
+	  	  }
 	  }
   }
   /* USER CODE END 3 */
