@@ -106,6 +106,7 @@ int main(void)
   FATFS_UnLinkDriver("0://"); // PREVENT ERRORS in LinkDriver if issues in the logical volume 0
   memset(wrbuffer, 0, sizeof(wrbuffer));
   strcpy(wrbuffer, "store test");
+  memset(rdbuffer, 0, sizeof(rdbuffer));
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,6 +116,43 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  switch(state)
+	  {
+	  	  case 0:
+	  	  {
+	  		  // wait and optin flag to open our file
+	  		  if (option == 1)
+	  		  {
+	  			  option = 0;
+	  			  state = 1;
+	  		  }
+	  	  }
+	  	  break;
+	  	  case 1:
+	  	  {
+	  		  if(FATFS_LinkDriver(&SD_Driver, SDPath) == 0) // Link available logical volume and copy value to SDPath
+	  		  {
+	  			  state 2;
+	  		  }
+	  		  else
+	  		  {
+	  			  state = 255;
+	  		  }
+	  	  }
+	  	  break;
+	  	  case 2:
+	  	  {
+	  		  if(f_mount(&SDFastFs, (TCHAR const*)SDPath, 0) == FR_OK) // Register Fatfs module
+	  		  {
+	  			  state = 3;
+	  		  }
+	  		  else
+	  		  {
+	  			  Error_Handler();
+	  		  }
+	  	  }
+	  	  break;
+	  }
   }
   /* USER CODE END 3 */
 }
