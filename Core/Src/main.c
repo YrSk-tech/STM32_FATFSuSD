@@ -76,7 +76,8 @@ int main(void)
 	FRESULT res;
 	uint32_t totalwr, totalrd;
 	uint8_t wrbuffer[100];
-
+	uint8_t rdbuffer[100];
+	uint8_t state, option;
 
   /* USER CODE END 1 */
 
@@ -102,6 +103,9 @@ int main(void)
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
+  FATFS_UnLinkDriver("0://"); // PREVENT ERRORS in LinkDriver if issues in the logical volume 0
+  memset(wrbuffer, 0, sizeof(wrbuffer));
+  strcpy(wrbuffer, "store test");
   /* USER CODE END 2 */
 
   /* Infinite loop */
