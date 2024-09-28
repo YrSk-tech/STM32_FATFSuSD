@@ -46,7 +46,7 @@ SD_HandleTypeDef hsd;
 /* USER CODE BEGIN PV */
 FATFS SDFastFs;// file system Object for SD disc logical drive
 FIL MyFile; // File object
-char SDPath[4]; // SD Disc ligical drive path
+char SDPath[4]; // SD Disc drive path
 static uint8_t buffer[_MAX_SS]; // a work buffer for the f_mkfs();
 
 
@@ -105,7 +105,7 @@ int main(void)
 
   FATFS_UnLinkDriver("0://"); // PREVENT ERRORS in LinkDriver if issues in the logical volume 0
   memset(wrbuffer, 0, sizeof(wrbuffer));
-  strcpy(wrbuffer, "store test");
+  strcpy(wrbuffer, 'store test');
   memset(rdbuffer, 0, sizeof(rdbuffer));
   /* USER CODE END 2 */
 
@@ -132,7 +132,7 @@ int main(void)
 	  	  {
 	  		  if(FATFS_LinkDriver(&SD_Driver, SDPath) == 0) // Link available logical volume and copy value to SDPath
 	  		  {
-	  			  state 2;
+	  			  state = 2;
 	  		  }
 	  		  else
 	  		  {
@@ -174,7 +174,7 @@ int main(void)
 	  	  break;
 	  	  case 4:
 	  	  {
-	  		  if(f_open(&MyFile, TEST.txt, FA_CREATE_ALWAYS | FA_WRITE) == FR_OK ) // Create and open a new file with write access
+	  		  if(f_open(&MyFile, "TEST.txt", FA_CREATE_ALWAYS | FA_WRITE) == FR_OK ) // Create and open a new file with write access
 	  		  {
 	  			  state = 6;
 	  		  }
@@ -186,7 +186,7 @@ int main(void)
 	  	  break;
 	  	  case 5:
 	  	  {
-	  		  if(f_open(&MyFile, TEST.txt, FA_READ) == FR_OK ) // open a new file with read access
+	  		  if(f_open(&MyFile, "TEST.txt", FA_READ) == FR_OK ) // open a new file with read access
 	  		  {
 	  			  state = 7;
 	  		  }
@@ -234,7 +234,7 @@ int main(void)
 	  	  break;
 	  	  case 10:
 	  	  {
-	  		  if(f_mkfs((TCHAR const*) SDPath, FM_ANY, 0 , buffer, SIZEOF(buffer)) == FR_OK)//Format logical drive FAT file system
+	  		  if(f_mkfs((TCHAR const*) SDPath, FM_ANY, 0 , buffer, sizeof(buffer)) == FR_OK)//Format logical drive FAT file system
 	  		  {
 	  			  state = 4;
 	  		  }
