@@ -204,7 +204,48 @@ int main(void)
 	  		  {
 	  			  Error_Handler();
 	  		  }
+	  		  else
+	  		  {
+	  			  state = 8;
+	  		  }
 
+	  	  }
+	  	  break;
+	  	  case 7:
+	  	  {
+	  		  res = f_read(&MyFile, rdbuffer, sizeof(rdbuffer), (UINT *)&totalrd); // Read file and copy information to buffer
+	  		  if(totalrd == 0 || (res != FR_OK)) // if nothing was writen in our file
+	  		  {
+	  			  Error_Handler();
+	  		  }
+	  		  else
+	  		  {
+	  			  state = 8;
+	  		  }
+
+	  	  }
+	  	  break;
+	  	  case 8:
+	  	  {
+	  		  f_close(&MyFile); // Close the open file
+	  		  state = 255;
+
+	  	  }
+	  	  break;
+	  	  case 10:
+	  	  {
+	  		  if(f_mkfs((TCHAR const*) SDPath, FM_ANY, 0 , buffer, SIZEOF(buffer)) == FR_OK)//Format logical drive FAT file system
+	  		  {
+	  			  state = 4;
+	  		  }
+	  		  else
+	  		  {
+	  			  Error_Handler();
+	  		  }
+	  	  }
+	  	  case 255:
+	  	  {
+	  		  FATFS_UnLinkDriver(SDPath); // unlink disc I/O Drive
 	  	  }
 	  }
   }
